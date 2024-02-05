@@ -72,7 +72,6 @@ export async function removeFile(filePath) {
 
   try {
     if (isFile(absoluteFilePath)) {
-      // удалить
       await unlink(absoluteFilePath);
     }
   } catch {

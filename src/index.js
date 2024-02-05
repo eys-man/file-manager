@@ -3,7 +3,7 @@ import os from 'os';
 import parseCommand from './utils/parseCommand.js';
 import showCurrentDirectory from './utils/showCurrentDirectory.js';
 
-// разобрать командную строку (через argv) для определения имени пользователя
+// определить имя пользователя
 let userName = '';
 if (process.argv.length <= 3 || process.argv[2] !== '--') userName = 'stranger';
 else userName = process.argv[3].slice(2).startsWith('username=') ?
@@ -19,13 +19,12 @@ const userInterface = readline.createInterface(process.stdin, process.stdout);
 userInterface
   .on('line', async (input) =>
   {
-    // console.log(`было введено '${input}'`);
     await parseCommand(input, userInterface);
     // после каждой операции вывод рабочего каталога
     showCurrentDirectory();
   })
   .on('SIGINT', () => {
-    // console.log(`вызван ctrl-c`);
+    // вызван ctrl-c
     userInterface.close();
   })
   .on('close', () => {

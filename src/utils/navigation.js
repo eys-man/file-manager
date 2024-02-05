@@ -34,7 +34,6 @@ export async function ls() {
         const Type = stats.isDirectory() ? 'directory' : 'file';
         filesInfo.push({Name, Type});
       } catch (err) {
-        // это типа не может прочитать статы скрытых файлов, системных, нет прав и т.п.
         console.log(``);
       }
     }
