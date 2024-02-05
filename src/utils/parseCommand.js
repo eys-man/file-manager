@@ -10,11 +10,11 @@ export default async function parseCommand(str, stream) {
         stream.close();
         break;
       case 'cd':
-        cd(args[0]);
+        await cd(args[0]);
         break;
       case 'up':
         // console.log(`на один уровень вверх`);
-        cd('..');
+        await cd('..');
         break;
       case 'ls':
         await ls();

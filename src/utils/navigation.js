@@ -1,6 +1,6 @@
 import { readdir, stat } from 'fs/promises';
 
-export function cd(path) {
+export async function cd(path) {
   try {
     process.chdir(path);
   } catch {
@@ -8,26 +8,38 @@ export function cd(path) {
   }
 }
 
+function compareFiles(a, b) {
+  if (a.Type === 'directory' && b.Type === 'directory')
+    if (a.Name.toLowerCase() < b.Name.toLowerCase()) return -1;
+    else return 1;
+  
+  if (a.Type === 'directory' && b.Type === 'file') return -1;
+  
+  if (a.Type === 'file' && b.Type === 'directory') return 1;
+  
+  if (a.Type === 'file' && b.Type === 'file')
+    if (a.Name.toLowerCase() < b.Name.toLowerCase()) return -1;
+    else return 1;
+}
+
 export async function ls() {
   try {
     const files = await readdir(process.cwd());
     
-    //console.table(files);
     let filesInfo = [];
-    // let dirInfo = [];
-    files.forEach(async file => {
-      // получить атрибуты файла (файл или каталог, в частности)
-      const stats = await stat(file);
-      const isDir = stats.isDirectory() ? 'directory' : 'file';
-      
-      // if (isDir === 'file') 
-      filesInfo.push(file, isDir);
-      // console.log(`файл: ${file}, stat=${isDir}`);
-    });
+
+    for (const Name of files) {
+      const stats = await stat(Name);
+      const Type = stats.isDirectory() ? 'directory' : 'file';
+
+      filesInfo.push({Name, Type});
+    }
+    // отсортировать массив
+    filesInfo.sort(compareFiles);
+
     console.table(filesInfo);
-    // или так
-    // for (const file of files) console.log(file);
   } catch (err) {
-    console.log(`error ls. ${err}. Operation failed`);
+    console.log(err);
+    console.log(`Operation failed`);
   }
 }
