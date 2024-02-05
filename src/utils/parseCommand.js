@@ -8,6 +8,7 @@ import {
 } from './fileOperations.js';
 import { cd, ls } from './navigation.js';
 import { hashFile } from './hashFile.js';
+import { compressFile, decompressFile } from './zip.js';
 
 export default async function parseCommand(str, stream) {
   const [command, ...args] = str.split(' ');
@@ -56,6 +57,14 @@ export default async function parseCommand(str, stream) {
           // console.log(`вывести хэш файла по пути '${args[0]}'`);
           await hashFile(args[0]);
           break;
+      case 'compress':
+            // console.log(`сжать файл '${args[0]}' в '${args[1]}'`);
+            await compressFile(args[0], args[1]);
+            break;
+      case 'decompress':
+            // console.log(`распаковать файл '${args[0]}' в '${args[1]}'`);
+            await decompressFile(args[0], args[1]);
+            break;
       default:
         console.log(`Invalid input`);
         break;
