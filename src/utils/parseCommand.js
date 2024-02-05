@@ -1,4 +1,11 @@
-import { readFile } from './fileOperations.js';
+import {
+  readFile,
+  addFile,
+  renameFile,
+  copyFile,
+  moveFile,
+  removeFile
+} from './fileOperations.js';
 import { cd, ls } from './navigation.js'
 
 export default async function parseCommand(str, stream) {
@@ -24,6 +31,26 @@ export default async function parseCommand(str, stream) {
         // console.log(`прочитать файл по пути '${args[0]}'`);
         await readFile(args[0]);
         break;
+      case 'add':
+          // console.log(`создать файл по пути '${args[0]}'`);
+          await addFile(args[0]);
+          break;
+      case 'rn':
+          // console.log(`переименовать файл по пути '${args[0]}' в '${args[1]}'`);
+          await renameFile(args[0], args[1]);
+          break;
+      case 'cp':
+          // console.log(`скопировать файл по пути '${args[0]}' в '${args[1]}'`);
+          await copyFile(args[0], args[1]);
+          break;
+      case 'mv':
+          // console.log(`переместить файл из '${args[0]}' в '${args[1]}'`);
+          await moveFile(args[0], args[1]);
+          break;
+      case 'rm':
+          // console.log(`удалить файл по пути '${args[0]}'`);
+          await removeFile(args[0]);
+          break;
       default:
         console.log(`Invalid input`);
         break;
