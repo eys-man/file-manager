@@ -1,7 +1,6 @@
-import { EventEmitter } from 'events';
 import readline from 'readline';
 import os from 'os';
-import { chdir } from 'process';
+import parseCommand from './utils/parseCommand.js';
 
 // разобрать командную строку (через argv) для определения имени пользователя
 let userName = '';
@@ -17,13 +16,18 @@ console.log(`You are currently in '${process.cwd()}'`);
 const userInterface = readline.createInterface(process.stdin, process.stdout);
 
 userInterface
-  .on('line', (input) =>
+  .on('line', async (input) =>
   {
-    console.log(`было введено '${input}'`);
-    // TODO: разбор введенного
+    // console.log(`было введено '${input}'`);
+    await parseCommand(input, userInterface);
+    // после каждой операции вывод рабочего каталога
+    console.log(`You are currently in '${process.cwd()}'`);
   })
-  .on('SIGINT', () => userInterface.close())
+  .on('SIGINT', () => {
+    // console.log(`вызван ctrl-c`);
+    userInterface.close();
+  })
   .on('close', () => {
     console.log(`Thank you for using File Manager, ${userName}, goodbye!`);
-    process.exit(0)
+    process.nextTick(() => process.exit());
   });
