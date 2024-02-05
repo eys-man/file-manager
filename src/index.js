@@ -1,6 +1,7 @@
 import readline from 'readline';
 import os from 'os';
 import parseCommand from './utils/parseCommand.js';
+import showCurrentDirectory from './utils/showCurrentDirectory.js';
 
 // разобрать командную строку (через argv) для определения имени пользователя
 let userName = '';
@@ -21,7 +22,7 @@ userInterface
     // console.log(`было введено '${input}'`);
     await parseCommand(input, userInterface);
     // после каждой операции вывод рабочего каталога
-    console.log(`You are currently in '${process.cwd()}'`);
+    showCurrentDirectory();
   })
   .on('SIGINT', () => {
     // console.log(`вызван ctrl-c`);

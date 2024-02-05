@@ -29,10 +29,14 @@ export async function ls() {
     let filesInfo = [];
 
     for (const Name of files) {
-      const stats = await stat(Name);
-      const Type = stats.isDirectory() ? 'directory' : 'file';
-
-      filesInfo.push({Name, Type});
+      try {
+        const stats = await stat(Name);
+        const Type = stats.isDirectory() ? 'directory' : 'file';
+        filesInfo.push({Name, Type});
+      } catch (err) {
+        // это типа не может прочитать статы скрытых файлов, системных, нет прав и т.п.
+        console.log(``);
+      }
     }
     // отсортировать массив
     filesInfo.sort(compareFiles);

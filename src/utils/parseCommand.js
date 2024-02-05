@@ -1,3 +1,4 @@
+import { readFile } from './fileOperations.js';
 import { cd, ls } from './navigation.js'
 
 export default async function parseCommand(str, stream) {
@@ -18,6 +19,10 @@ export default async function parseCommand(str, stream) {
         break;
       case 'ls':
         await ls();
+        break;
+      case 'cat':
+        // console.log(`прочитать файл по пути '${args[0]}'`);
+        await readFile(args[0]);
         break;
       default:
         console.log(`Invalid input`);
