@@ -6,7 +6,8 @@ import {
   moveFile,
   removeFile
 } from './fileOperations.js';
-import { cd, ls } from './navigation.js'
+import { cd, ls } from './navigation.js';
+import { hashFile } from './hashFile.js';
 
 export default async function parseCommand(str, stream) {
   const [command, ...args] = str.split(' ');
@@ -50,6 +51,10 @@ export default async function parseCommand(str, stream) {
       case 'rm':
           // console.log(`удалить файл по пути '${args[0]}'`);
           await removeFile(args[0]);
+          break;
+      case 'hash':
+          // console.log(`вывести хэш файла по пути '${args[0]}'`);
+          await hashFile(args[0]);
           break;
       default:
         console.log(`Invalid input`);
